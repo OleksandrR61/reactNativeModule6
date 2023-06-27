@@ -49,7 +49,7 @@ export default function App() {
     <NavigationContainer>
       {isAuth 
         ? <MainRoute handleAuth={handleAuth} />
-        : <AuthRoute handleAuth={handleAuth} />
+        : <AuthRoute /*handleAuth={handleAuth}*/ />
       }
     </NavigationContainer>
   </Provider>;

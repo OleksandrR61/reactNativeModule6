@@ -19,7 +19,7 @@ const INITIALSTATE = {
     PASSWORD: '',
 };
 
-const RegistrationScreen = ({navigation, route}) => {
+const RegistrationScreen = ({navigation/*, route*/}) => {
     const [ login, setLogin ] = useState(INITIALSTATE.LOGIN);
     const [ email, setEmail ] = useState(INITIALSTATE.EMAIL);
     const [ password, setPassword ] = useState(INITIALSTATE.PASSWORD);
@@ -30,7 +30,7 @@ const RegistrationScreen = ({navigation, route}) => {
         setEmail(INITIALSTATE.EMAIL);
         setPassword(INITIALSTATE.PASSWORD);
         Keyboard.dismiss();
-        route.params.handleSubmit();
+        // route.params.handleSubmit();
     };
 
     return (

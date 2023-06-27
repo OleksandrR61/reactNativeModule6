@@ -17,7 +17,7 @@ const INITIALSTATE = {
     PASSWORD: '',
 };
 
-const LoginScreen = ({navigation, route}) => {
+const LoginScreen = ({navigation/*, route*/}) => {
     const [ email, setEmail ] = useState(INITIALSTATE.EMAIL);
     const [ password, setPassword ] = useState(INITIALSTATE.PASSWORD);
 
@@ -26,7 +26,7 @@ const LoginScreen = ({navigation, route}) => {
         setEmail(INITIALSTATE.EMAIL);
         setPassword(INITIALSTATE.PASSWORD);
         Keyboard.dismiss();
-        route.params.handleSubmit();
+        // route.params.handleSubmit();
     };
 
     return (

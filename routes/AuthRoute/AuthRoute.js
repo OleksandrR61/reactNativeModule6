@@ -5,12 +5,12 @@ import RegistrationScreen from '../../Screens/auth/RegistrationScreen/Registrati
 
 const AuthStack = createStackNavigator();
 
-const AuthRoute = ({handleAuth}) => <AuthStack.Navigator initialRouteName='LoginScreen'>
+const AuthRoute = (/*{handleAuth}*/) => <AuthStack.Navigator initialRouteName='LoginScreen'>
     <AuthStack.Screen
         name={'LoginScreen'}
         component={LoginScreen}
         initialParams={{
-            handleSubmit: handleAuth,
+            // handleSubmit: handleAuth,
         }}
         options={{
             headerShown: false,
@@ -20,7 +20,7 @@ const AuthRoute = ({handleAuth}) => <AuthStack.Navigator initialRouteName='Login
         name={'RegistrationScreen'}
         component={RegistrationScreen}
         initialParams={{
-            handleSubmit: handleAuth,
+            // handleSubmit: handleAuth,
         }}
         options={{
             headerShown: false,
