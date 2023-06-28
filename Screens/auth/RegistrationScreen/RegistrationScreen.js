@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Keyboard, View, Text } from "react-native";
 
 import {
@@ -13,24 +14,31 @@ import {
     ProfileAvatar,
 } from "../../../components";
 
+import { authSignUp } from "../../../redux/auth/authOperations";
+
 const INITIALSTATE = {
+    AVATAR: null,
     LOGIN: '',
     EMAIL: '',
     PASSWORD: '',
 };
 
-const RegistrationScreen = ({navigation/*, route*/}) => {
+const RegistrationScreen = ({navigation}) => {
+    const [ avatar, setAvatar ] = useState(INITIALSTATE.AVATAR);
     const [ login, setLogin ] = useState(INITIALSTATE.LOGIN);
     const [ email, setEmail ] = useState(INITIALSTATE.EMAIL);
     const [ password, setPassword ] = useState(INITIALSTATE.PASSWORD);
 
+    const dispatch = useDispatch();
+
     const handleSubmit = () => {
-        console.log({login, email, password});
+        Keyboard.dismiss();
+
+        dispatch(authSignUp({avatar, login, email, password}));
+
         setLogin(INITIALSTATE.LOGIN);
         setEmail(INITIALSTATE.EMAIL);
         setPassword(INITIALSTATE.PASSWORD);
-        Keyboard.dismiss();
-        // route.params.handleSubmit();
     };
 
     return (

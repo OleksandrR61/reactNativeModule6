@@ -1,5 +1,17 @@
-const authSignInUser = () => async (dispatch, getState) => {};
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-const authSignUpUser = () => async (dispatch, getState) => {};
+import { auth } from '../../firebase/config';
 
-const authSignOutUser = () => async (dispatch, getState) => {};
+const authSignIn = () => async (dispatch, getState) => {};
+
+const authSignUp = ({avatar, login, email, password}) => async () => {
+    try {
+        await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+        console.log("Error message: ", error.message);
+    };
+};
+
+const authSignOut = () => async (dispatch, getState) => {};
+
+export { authSignIn, authSignUp, authSignOut}
