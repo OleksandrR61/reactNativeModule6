@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Keyboard, View, Text } from "react-native";
 
 import {
@@ -11,22 +12,26 @@ import {
     BtnPrime,
     BtnAdditional,
 } from "../../../components";
+import { authSignIn } from "../../../redux/auth/authOperations";
 
 const INITIALSTATE = {
     EMAIL: '',
     PASSWORD: '',
 };
 
-const LoginScreen = ({navigation/*, route*/}) => {
+const LoginScreen = ({navigation}) => {
     const [ email, setEmail ] = useState(INITIALSTATE.EMAIL);
     const [ password, setPassword ] = useState(INITIALSTATE.PASSWORD);
 
+    const dispatch = useDispatch();
+
     const handleSubmit = () => {
-        console.log({email, password});
-        setEmail(INITIALSTATE.EMAIL);
-        setPassword(INITIALSTATE.PASSWORD);
         Keyboard.dismiss();
-        // route.params.handleSubmit();
+
+        dispatch(authSignIn({email, password}));
+
+        setEmail(INITIALSTATE.EMAIL);
+        setPassword(INITIALSTATE.PASSWORD);        
     };
 
     return (

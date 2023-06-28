@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { LogBox } from 'react-native';
 import { Provider } from 'react-redux';
 
 import * as Font from 'expo-font';
@@ -12,13 +11,12 @@ import { Container } from './components';
 
 import { store } from './redux/store';
 
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
+import { auth } from './firebase/config';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function App() {
   const [ isReady, setIsReady ] = useState(false);
-  const [ isAuth, setIsAuth ] = useState(false);
+  const [ user, setUser ] = useState(null);
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -39,7 +37,9 @@ export default function App() {
     loadFonts();
   }, [setIsReady]);
 
-  const handleAuth = () => setIsAuth(isAuth => !isAuth);
+  const handleAuth = () => setUser(null);
+
+  onAuthStateChanged(auth, user => setUser(user));
 
   if (!isReady) {
     return <Container/>;
@@ -47,7 +47,7 @@ export default function App() {
 
   return <Provider store={store}>
     <NavigationContainer>
-      {isAuth 
+      {user 
         ? <MainRoute handleAuth={handleAuth} />
         : <AuthRoute /*handleAuth={handleAuth}*/ />
       }
