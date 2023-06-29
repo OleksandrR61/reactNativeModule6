@@ -34,6 +34,8 @@ const LoginScreen = ({navigation}) => {
         setPassword(INITIALSTATE.PASSWORD);        
     };
 
+    const isBtnDisabled = !email || !password;
+
     return (
         <Container>
             <InnerContainer>
@@ -50,7 +52,13 @@ const LoginScreen = ({navigation}) => {
                         value={password}
                         onChangeText={value => setPassword(value)}
                     />
-                    <BtnPrime onPress={handleSubmit}>Увійти</BtnPrime>
+                    <BtnPrime
+                        onPress={handleSubmit}
+                        disabled={isBtnDisabled}
+                        style={isBtnDisabled && {backgroundColor: "#F6F6F6"}}                        
+                    >
+                        <Text style={isBtnDisabled && {color: "#BDBDBD"}}>Увійти</Text>
+                    </BtnPrime>
                     <View style={{
                         marginTop: 16,
                         flex: 1,

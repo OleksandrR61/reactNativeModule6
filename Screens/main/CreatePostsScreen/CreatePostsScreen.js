@@ -4,6 +4,8 @@ import * as Location from "expo-location";
 
 import { PostsContainer, Form, FormInputImg, FormInput, BtnPrime } from "../../../components";
 
+import { uploadToServer } from "../../../utils";
+
 const CreatePostsScreen = ({navigation}) => {
     const [ foto, setFoto ] = useState(null);
     const [ title, setTitle ] = useState("");
@@ -40,7 +42,7 @@ const CreatePostsScreen = ({navigation}) => {
         
         navigation.navigate("PostsScreen", {
             post: {
-                img: foto,
+                img: uploadToServer(foto, "posts"),
                 title,
                 location: {
                     title: location,

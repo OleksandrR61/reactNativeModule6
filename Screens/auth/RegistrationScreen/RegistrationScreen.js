@@ -41,6 +41,8 @@ const RegistrationScreen = ({navigation}) => {
         setPassword(INITIALSTATE.PASSWORD);
     };
 
+    const isBtnDisabled = !login || !email || !password;
+
     return (
         <Container>
             <InnerContainer style={{paddingTop: 60}}>
@@ -63,7 +65,13 @@ const RegistrationScreen = ({navigation}) => {
                         value={password}
                         onChangeText={value => setPassword(value)}
                     />
-                    <BtnPrime onPress={handleSubmit}>Зареєстуватися</BtnPrime>
+                    <BtnPrime
+                        onPress={handleSubmit}
+                        disabled={isBtnDisabled}
+                        style={isBtnDisabled && {backgroundColor: "#F6F6F6"}}                        
+                    >
+                        <Text style={isBtnDisabled && {color: "#BDBDBD"}}>Зареєстуватися</Text>
+                    </BtnPrime>
                     <View style={{
                         marginTop: 16,
                         flex: 1,
