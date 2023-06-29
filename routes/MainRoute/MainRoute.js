@@ -8,31 +8,31 @@ import { Header } from '../../components';
 
 const MainStack = createStackNavigator();
 
-const MainRoute = ({/*handleAuth*/}) => <MainStack.Navigator initialRouteName='HomeScreen'>
-    <MainStack.Screen
-        name={'HomeScreen'}
-        component={HomeScreen}
-        options={{
-            headerShown: false,
-        }}
-        // initialParams={{
-        //     handleAuth,
-        // }}
-    />
-    <MainStack.Screen
-        name={'CommentsScreen'}
-        component={CommentsScreen}
-        options={{
-            header: ({navigation}) => <Header title={"Коментарі"} back={navigation.goBack}/>,
-        }}
-    />
-    <MainStack.Screen
-        name={'MapScreen'}
-        component={MapScreen}
-        options={{
-            header: ({navigation}) => <Header title={"Локація"} back={navigation.goBack}/>,
-        }}
-    />
-</MainStack.Navigator>;
+const MainRoute = () => {
+    
+    return <MainStack.Navigator initialRouteName='HomeScreen'>
+        <MainStack.Screen
+            name={'HomeScreen'}
+            component={HomeScreen}
+            options={{
+                headerShown: false,
+            }}
+        />
+        <MainStack.Screen
+            name={'CommentsScreen'}
+            component={CommentsScreen}
+            options={{
+                header: ({navigation}) => <Header title={"Коментарі"} back={navigation.goBack}/>,
+            }}
+        />
+        <MainStack.Screen
+            name={'MapScreen'}
+            component={MapScreen}
+            options={{
+                header: ({navigation}) => <Header title={"Локація"} back={navigation.goBack}/>,
+            }}
+        />
+    </MainStack.Navigator>;
+};
 
 export default MainRoute;

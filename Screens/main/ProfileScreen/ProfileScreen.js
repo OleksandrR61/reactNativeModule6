@@ -1,11 +1,16 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { Container, InnerContainer, PageHeader, ProfileAvatar, BtnAdditionalImg, PostsList } from "../../../components";
 
 import userExample from "../../../example/userExample";
 
+import { authSignOut } from "../../../redux/auth/authOperations";
+
 const ProfileScreen = ({navigation}) => {
     const [ user, setUser ] = useState(userExample);
+
+    const dispatch = useDispatch();
     
     return <Container>
     <InnerContainer style={{
@@ -22,6 +27,7 @@ const ProfileScreen = ({navigation}) => {
                 height: 24,
                 width: 24,
             }}
+            onPress={() => dispatch(authSignOut())}
         />
         <PageHeader
             style={{
