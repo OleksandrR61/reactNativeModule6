@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     container: {
         position: "absolute",
         top: -60,
-        width: "100%",
+        width: 120,
+        alignSelf: "center",
     },
     avatar: {
         height: 120,
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
         height: 25,
         width: 25,
         borderRadius: 25,
-        right: dimensionWidth / 2 - 60 - (25 / 2),
+        right: -13,
         bottom: 9,
     },
     byttonImg: {

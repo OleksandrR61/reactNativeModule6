@@ -47,31 +47,29 @@ const authSignOut = () => async dispatch => {
     try {
         await signOut(auth);
 
-        dispatch(authSlice.actions.changeState(false));
-        dispatch(authSlice.actions.updateUser({
-            userId: null,
-            userName: "",
-            userEmail: "",
-            userAvatar: null,
-        }));
+        dispatch(authSlice.actions.signOut());
     } catch (error) {
         console.log(error.message);
     };
 };
 
 const authStateChange = () => async dispatch => {
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            dispatch(authSlice.actions.updateUser({
-                userId: user.uid,
-                userName: user.displayName,
-                userEmail: user.email,
-                userAvatar: user.photoURL,
-            }));
+    try {
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                dispatch(authSlice.actions.changeState(true));
 
-            dispatch(authSlice.actions.changeState(true));
-        }
-    });
+                dispatch(authSlice.actions.updateUser({
+                    userId: user.uid,
+                    userName: user.displayName,
+                    userEmail: user.email,
+                    userAvatar: user.photoURL,
+                }));
+            }
+        });
+    } catch (error) {
+        console.log(error.message);
+    };
 };
 
 export { authSignIn, authSignUp, authSignOut, authStateChange};

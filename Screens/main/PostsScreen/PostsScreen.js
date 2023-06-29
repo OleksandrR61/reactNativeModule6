@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import { PostsContainer, PostsUser, PostsList } from "../../../components";
 
-import userExample from "../../../example/userExample";
-
 const PostsScreen = ({route, navigation}) => {
-    const [ user, setUser ] = useState(userExample);
+    const { userName, userEmail, userAvatar } = useSelector(({auth}) => auth);
     const [ posts, setPosts ] = useState([]);
 
     useEffect(() => {
@@ -20,7 +19,7 @@ const PostsScreen = ({route, navigation}) => {
     }, []);
     
     return <PostsContainer>
-        <PostsUser user={user}/>
+        <PostsUser user={{name: userName, email: userEmail, avatar: userAvatar}} />
         <PostsList
             posts={posts}
             screen={"posts"}
