@@ -9,7 +9,7 @@ import { Header } from '../../../components';
 
 const MainTab = createBottomTabNavigator();
 
-const HomeScreen = ({route}) => <MainTab.Navigator
+const HomeScreen = ({/*route*/}) => <MainTab.Navigator
     initialRouteName='ProfileScreen'
     screenOptions={{
         tabBarShowLabel: false,
@@ -28,7 +28,7 @@ const HomeScreen = ({route}) => <MainTab.Navigator
         name={"PostsScreen"}
         component={PostsScreen}
         options={{
-            header: () => <Header title={"Публікації"} logOut={route.params.handleAuth}/>,
+            header: () => <Header title={"Публікації"} logOut={() => {/*route.params.handleAuth*/}}/>,
             tabBarItemStyle: {
                 paddingTop: 17,
                 paddingBottom: 42,

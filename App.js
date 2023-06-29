@@ -1,22 +1,15 @@
 import { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 
 import * as Font from 'expo-font';
 
-import MainRoute from './routes/MainRoute/MainRoute';
-import AuthRoute from './routes/AuthRoute/AuthRoute';
-
 import { Container } from './components';
+import { UserContainer } from './components/UserContainer/UserContainer';
 
 import { store } from './redux/store';
 
-import { auth } from './firebase/config';
-import { onAuthStateChanged } from 'firebase/auth';
-
 export default function App() {
   const [ isReady, setIsReady ] = useState(false);
-  const [ user, setUser ] = useState(null);
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -37,20 +30,11 @@ export default function App() {
     loadFonts();
   }, [setIsReady]);
 
-  const handleAuth = () => setUser(null);
-
-  onAuthStateChanged(auth, user => setUser(user));
-
   if (!isReady) {
     return <Container/>;
   };
 
   return <Provider store={store}>
-    <NavigationContainer>
-      {user 
-        ? <MainRoute handleAuth={handleAuth} />
-        : <AuthRoute /*handleAuth={handleAuth}*/ />
-      }
-    </NavigationContainer>
+    <UserContainer />
   </Provider>;
 };

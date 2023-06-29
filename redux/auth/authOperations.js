@@ -43,6 +43,8 @@ const authSignUp = ({avatar, login, email, password}) => async dispatch => {
 
 const authSignOut = () => async (dispatch, getState) => {};
 
-const authStateChange = () => async (dispatch, getState) => {};
+const authStateChange = () => async () => {
+    onAuthStateChanged(auth, user => setUser(user));
+};
 
 export { authSignIn, authSignUp, authSignOut, authStateChange};

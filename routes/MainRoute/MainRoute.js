@@ -8,16 +8,16 @@ import { Header } from '../../components';
 
 const MainStack = createStackNavigator();
 
-const MainRoute = ({handleAuth}) => <MainStack.Navigator initialRouteName='HomeScreen'>
+const MainRoute = ({/*handleAuth*/}) => <MainStack.Navigator initialRouteName='HomeScreen'>
     <MainStack.Screen
         name={'HomeScreen'}
         component={HomeScreen}
         options={{
             headerShown: false,
         }}
-        initialParams={{
-            handleAuth,
-        }}
+        // initialParams={{
+        //     handleAuth,
+        // }}
     />
     <MainStack.Screen
         name={'CommentsScreen'}
