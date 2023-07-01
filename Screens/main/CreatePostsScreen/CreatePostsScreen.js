@@ -10,6 +10,7 @@ const CreatePostsScreen = ({navigation}) => {
     const [ foto, setFoto ] = useState(null);
     const [ title, setTitle ] = useState("");
     const [ location, setLocation ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(false);
     const [ hasLocationPermission, setHasLocationPermission ] = useState(false);
     const [ isTrashBtnVisible, setIsTrashBtnVisible ] = useState(true);
 
@@ -38,28 +39,35 @@ const CreatePostsScreen = ({navigation}) => {
     }, []);
 
     const handleSubmit = async () => {
+        setIsLoading(true);
         const coordinate = await Location.getCurrentPositionAsync();
+        const imgURL = await uploadToServer(foto, "posts");
+
+        const post = {
+            img: imgURL,
+            title,
+            location: {
+                title: location,
+                latitude: hasLocationPermission ? coordinate.coords.latitude : 0,
+                longitude: hasLocationPermission ? coordinate.coords.longitude : 0,
+            },
+        };
+
+        handleReset();
         
         navigation.navigate("PostsScreen", {
-            post: {
-                img: uploadToServer(foto, "posts"),
-                title,
-                location: {
-                    title: location,
-                    latitude: hasLocationPermission ? coordinate.coords.latitude : 0,
-                    longitude: hasLocationPermission ? coordinate.coords.longitude : 0,
-                },
-            },
-        })
+            post: post,
+        });
     };
 
     const handleReset = () => {
         setFoto(null);
         setTitle("");
         setLocation("");
+        setIsLoading(false);
     };
 
-    const isBtnDisabled = !foto || !title || !location;
+    const isBtnDisabled = !foto || !title || !location || isLoading;
 
     return (<>
         <PostsContainer>
@@ -87,7 +95,9 @@ const CreatePostsScreen = ({navigation}) => {
                         : {marginBottom: 93}
                     }
                 >
-                    <Text style={isBtnDisabled && styles.textBtnDisabled}>Опубліковати</Text>
+                    <Text style={isBtnDisabled && styles.textBtnDisabled}>
+                        {isLoading ? "Очікуйте..." : "Опубліковати"}
+                    </Text>
                 </BtnPrime>
             </Form>
         </PostsContainer>

@@ -17,24 +17,28 @@ import { authSignIn } from "../../../redux/auth/authOperations";
 const INITIALSTATE = {
     EMAIL: '',
     PASSWORD: '',
+    ISLOADING: false,
 };
 
 const LoginScreen = ({navigation}) => {
     const [ email, setEmail ] = useState(INITIALSTATE.EMAIL);
     const [ password, setPassword ] = useState(INITIALSTATE.PASSWORD);
+    const [ isLoading, setIsLoading ] = useState(INITIALSTATE.ISLOADING);
 
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
         Keyboard.dismiss();
+        setIsLoading(true);
 
         dispatch(authSignIn({email, password}));
 
         setEmail(INITIALSTATE.EMAIL);
-        setPassword(INITIALSTATE.PASSWORD);        
+        setPassword(INITIALSTATE.PASSWORD); 
+        setIsLoading(INITIALSTATE.ISLOADING);       
     };
 
-    const isBtnDisabled = !email || !password;
+    const isBtnDisabled = !email || !password || isLoading;
 
     return (
         <Container>
@@ -57,7 +61,9 @@ const LoginScreen = ({navigation}) => {
                         disabled={isBtnDisabled}
                         style={isBtnDisabled && {backgroundColor: "#F6F6F6"}}                        
                     >
-                        <Text style={isBtnDisabled && {color: "#BDBDBD"}}>Увійти</Text>
+                        <Text style={isBtnDisabled && {color: "#BDBDBD"}}>
+                            {isLoading ? "Очікуйте..." : "Увійти"}
+                        </Text>
                     </BtnPrime>
                     <View style={{
                         marginTop: 16,

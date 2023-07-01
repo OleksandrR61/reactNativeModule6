@@ -21,6 +21,7 @@ const INITIALSTATE = {
     LOGIN: '',
     EMAIL: '',
     PASSWORD: '',
+    ISLOADING: false,
 };
 
 const RegistrationScreen = ({navigation}) => {
@@ -28,20 +29,23 @@ const RegistrationScreen = ({navigation}) => {
     const [ login, setLogin ] = useState(INITIALSTATE.LOGIN);
     const [ email, setEmail ] = useState(INITIALSTATE.EMAIL);
     const [ password, setPassword ] = useState(INITIALSTATE.PASSWORD);
+    const [ isLoading, setIsLoading ] = useState(INITIALSTATE.ISLOADING);
 
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
         Keyboard.dismiss();
+        setIsLoading(true);
 
         dispatch(authSignUp({avatar, login, email, password}));
 
         setLogin(INITIALSTATE.LOGIN);
         setEmail(INITIALSTATE.EMAIL);
         setPassword(INITIALSTATE.PASSWORD);
+        setIsLoading(INITIALSTATE.ISLOADING);
     };
 
-    const isBtnDisabled = !login || !email || !password;
+    const isBtnDisabled = !avatar || !login || !email || !password || isLoading;
 
     return (
         <Container>
@@ -70,7 +74,9 @@ const RegistrationScreen = ({navigation}) => {
                         disabled={isBtnDisabled}
                         style={isBtnDisabled && {backgroundColor: "#F6F6F6"}}                        
                     >
-                        <Text style={isBtnDisabled && {color: "#BDBDBD"}}>Зареєстуватися</Text>
+                        <Text style={isBtnDisabled && {color: "#BDBDBD"}}>
+                            {isLoading ? "Очікуйте..." : "Зареєстуватися"}
+                        </Text>
                     </BtnPrime>
                     <View style={{
                         marginTop: 16,
