@@ -1,3 +1,4 @@
 import uploadToServer from "./uploadToServer";
+import uploadPostToServer from "./uploadPostToServer";
 
-export { uploadToServer };
+export { uploadToServer, uploadPostToServer };

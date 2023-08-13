@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { StyleSheet, View, Image, Text, TouchableOpacity, Keyboard } from "react-native";
 import * as Location from "expo-location";
 
 import { PostsContainer, Form, FormInputImg, FormInput, BtnPrime } from "../../../components";
 
-import { uploadToServer } from "../../../utils";
+import { uploadToServer, uploadPostToServer } from "../../../utils";
 
 const CreatePostsScreen = ({navigation}) => {
     const [ foto, setFoto ] = useState(null);
@@ -13,6 +14,8 @@ const CreatePostsScreen = ({navigation}) => {
     const [ isLoading, setIsLoading ] = useState(false);
     const [ hasLocationPermission, setHasLocationPermission ] = useState(false);
     const [ isTrashBtnVisible, setIsTrashBtnVisible ] = useState(true);
+
+    const { userId } = useSelector(({auth}) => auth);
 
     useEffect(() => {
         const hideTrashBtn = Keyboard.addListener('keyboardDidShow', () => {
@@ -39,25 +42,30 @@ const CreatePostsScreen = ({navigation}) => {
     }, []);
 
     const handleSubmit = async () => {
-        setIsLoading(true);
-        const coordinate = await Location.getCurrentPositionAsync();
-        const imgURL = await uploadToServer(foto, "posts");
+        try {
+            setIsLoading(true);
 
-        const post = {
-            img: imgURL,
-            title,
-            location: {
-                title: location,
-                latitude: hasLocationPermission ? coordinate.coords.latitude : 0,
-                longitude: hasLocationPermission ? coordinate.coords.longitude : 0,
-            },
-        };
+            const coordinate = await Location.getCurrentPositionAsync();
+            const imgURL = await uploadToServer(foto, "posts");
 
-        handleReset();
+            await uploadPostToServer({
+                author: userId,
+                img: imgURL,
+                title,
+                location: {
+                    title: location,
+                    latitude: hasLocationPermission ? coordinate.coords.latitude : 0,
+                    longitude: hasLocationPermission ? coordinate.coords.longitude : 0,
+                },
+            });
+
+            handleReset();
         
-        navigation.navigate("PostsScreen", {
-            post: post,
-        });
+            navigation.navigate("PostsScreen");
+        } catch (error) {
+            console.log(error.message);
+            setIsLoading(false);
+        };
     };
 
     const handleReset = () => {

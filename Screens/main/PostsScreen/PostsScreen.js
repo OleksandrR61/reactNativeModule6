@@ -28,6 +28,5 @@ const PostsScreen = ({route, navigation}) => {
         />
     </PostsContainer>
 };
-console.log(posts)
 
 export default PostsScreen;
