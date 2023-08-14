@@ -17,7 +17,7 @@ const ProfileScreen = ({navigation}) => {
     <InnerContainer style={{
         paddingTop: 127,
     }}>
-        <ProfileAvatar source={userAvatar} />
+        <ProfileAvatar source={require('../../../assets/img/userExample.jpg')} />
         <PageHeader
             style={{
                 fontWeight: "500",

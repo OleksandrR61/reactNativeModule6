@@ -1,25 +1,32 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { collection, onSnapshot } from "firebase/firestore";
 
 import { PostsContainer, PostsUser, PostsList } from "../../../components";
+import { firestore } from "../../../firebase/config";
 
 const PostsScreen = ({route, navigation}) => {
     const { userId, userName, userEmail, userAvatar } = useSelector(({auth}) => auth);
     const [ posts, setPosts ] = useState([]);
 
+    const getAllPost = () => {
+        onSnapshot(collection(firestore, "posts"), data => {
+            setPosts(data.docs.map(doc => doc.data()));
+        });
+    };
+
     useEffect(() => {
-        if (route.params?.post) {
-            setPosts(posts => [...posts, {
-                ...route.params.post,
-                id: userId + Date.now().toString(),
-                comments: [],
-                likes: 0,
-            }]);
-        };        
+        getAllPost();        
     }, []);
-    
+
     return <PostsContainer>
-        <PostsUser user={{name: userName, email: userEmail, avatar: userAvatar}} />
+        <PostsUser
+            user={{
+                name: userName,
+                email: userEmail,
+                avatar: require('../../../assets/img/userExample.jpg'),
+            }}
+        />
         <PostsList
             posts={posts}
             screen={"posts"}

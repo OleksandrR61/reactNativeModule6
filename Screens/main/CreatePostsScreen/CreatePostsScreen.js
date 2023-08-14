@@ -57,6 +57,9 @@ const CreatePostsScreen = ({navigation}) => {
                     latitude: hasLocationPermission ? coordinate.coords.latitude : 0,
                     longitude: hasLocationPermission ? coordinate.coords.longitude : 0,
                 },
+                id: userId + Date.now().toString(),
+                comments: [],
+                likes: 0,
             });
 
             handleReset();
