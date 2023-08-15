@@ -42,10 +42,14 @@ export const PostsListItem = ({post, screen, navigation}) => <View style={styles
                 styleImg={styles.commentImg}
                 onPress={() => navigation.navigate("MapScreen", {
                     ...post.location,
-                    title: post.title}
-                )}
+                })}
             />
-            <Text style={styles.location}>
+            <Text
+                style={styles.location}
+                onPress={() => navigation.navigate("MapScreen", {
+                    ...post.location,
+                })}
+            >
                 {screen === "profile" 
                     ? post.location.title.split(",").reverse()[0]
                     : post.location.title
