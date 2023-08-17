@@ -6,9 +6,7 @@ export const CommentsList = ({comments}) => <ScrollView style={styles.container}
     {comments.map((comment, index) => <CommentsListItem
         key={comment.id}
         comment={comment}
-        isOdd={index % 2 === 0}
-    />)}
-    
+    />)}    
 </ScrollView>;
 
 const styles = StyleSheet.create({

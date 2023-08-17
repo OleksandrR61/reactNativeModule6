@@ -1,71 +1,114 @@
-import { useState } from "react";
-import { View, TouchableOpacity, Keyboard, ImageBackground } from "react-native";
-import { PostsContainer, PostImage, CommentsList, FormInput } from "../../../components/";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { View, TouchableOpacity, Keyboard, ImageBackground, Text } from "react-native";
+import { collection, onSnapshot } from "firebase/firestore";
 
-const months = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
+import { PostsContainer, PostImage, CommentsList, FormInput } from "../../../components/";
+import { uploadCommentToServer } from "../../../firebase/api";
+import { firestore } from "../../../firebase/config";
+
+const MONTHS = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
 
 const CommentsScreen = ({route}) => {
-    const [ comments, setComments ] = useState(route.params.comments);
+    const [ comments, setComments ] = useState([]);
     const [ text, setText ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(false);
+
+    const { userId } = useSelector(({auth}) => auth);
     
-    const handlePress = () => {
+    const handlePress = async () => {
         if (text){
+            Keyboard.dismiss();
+
+            setIsLoading(true);
+
             const dateNow = new Date();
             
-            setComments(comments => [...comments, {
-                id: comments.length,
-                author: require('../../../assets/img/userExample.jpg'),
+            await uploadCommentToServer({
+                id: `${userId + Date.now()}`,
+                author: userId,
                 text,
-                date: `${dateNow.getDate() + 1} ${months[dateNow.getMonth()]}, ${dateNow.getFullYear()} | ${dateNow.getHours()}:${dateNow.getMinutes() < 10 ? "0" + dateNow.getMinutes() : dateNow.getMinutes()}`
-            }]);
+                date: `${dateNow.getDate() + 1} ${MONTHS[dateNow.getMonth()]}, ${dateNow.getFullYear()} | ${dateNow.getHours()}:${dateNow.getMinutes() < 10 ? "0" + dateNow.getMinutes() : dateNow.getMinutes()}`
+            }, route.params.postId);
+
             setText("");
-            
-            Keyboard.dismiss();
+            setIsLoading(false);
         };
     };
+
+    const getAllComments = () => {
+        onSnapshot(collection(firestore, "posts"), data => {
+            setComments(data.docs.find(doc => doc.id === route.params.postId).data().comments);
+        });
+    };
+
+    useEffect(() => {
+        getAllComments();        
+    }, []);
 
     return <PostsContainer>
         <PostImage
             source={route.params.img}
         />
         <CommentsList comments={comments} />
-        <View style={{position: "relative"}}>
-            <FormInput
-                placeholder={"Коментувати..."}
-                value={text}
-                onChangeText={setText}
-                onEndEditing={handlePress}
-                style={{
-                    borderRadius: 100,
-                    fontFamily: "Inter-Medium",
-                    fontWeight: "500",
-                }}
-            />
-            <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={handlePress}
-                style={{
-                    flex:1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 34,
-                    width: 34,
-                    borderRadius: 17,
-                    backgroundColor: "#FF6C00",
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                }}
-            >
-                <ImageBackground
-                    source={require('../../../assets/img/vector.png')}
+        {
+            isLoading
+                ? <View
                     style={{
-                        width: 10,
-                        height: 14,
+                        alignItems: 'center',
+                        paddingVertical: 16,
+                        paddingHorizontal: 32,
+                        backgroundColor: '#F6F6F6',
+                        borderRadius: 100,
+                        marginBottom: 16,
                     }}
-                />
-            </TouchableOpacity>
-        </View>
+                >
+                    <Text
+                        style={{
+                            color: "#BDBDBD",
+                        }}
+                    >
+                        Очікуйте...
+                    </Text>
+                </View>
+                : <View style={{position: "relative"}}>
+                    <FormInput
+                        placeholder={"Коментувати..."}
+                        value={text}
+                        onChangeText={setText}
+                        onEndEditing={handlePress}
+                        style={{
+                            borderRadius: 100,
+                            fontFamily: "Inter-Medium",
+                            fontWeight: "500",
+                        }}
+                    />
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={handlePress}
+                        style={{
+                            flex:1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: 34,
+                            width: 34,
+                            borderRadius: 17,
+                            backgroundColor: "#FF6C00",
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                        }}
+                    >
+                        <ImageBackground
+                            source={require('../../../assets/img/vector.png')}
+                            style={{
+                                width: 10,
+                                height: 14,
+                            }}
+                        />
+                    </TouchableOpacity>
+                </View>
+        }
     </PostsContainer>;
 };
 

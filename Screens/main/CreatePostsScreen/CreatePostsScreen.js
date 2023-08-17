@@ -5,7 +5,7 @@ import * as Location from "expo-location";
 
 import { PostsContainer, Form, FormInputImg, FormInput, BtnPrime } from "../../../components";
 
-import { uploadToServer, uploadPostToServer } from "../../../utils";
+import { uploadToServer, uploadPostToServer } from "../../../firebase/api";
 
 const CreatePostsScreen = ({navigation}) => {
     const [ foto, setFoto ] = useState(null);

@@ -18,6 +18,8 @@ export const PostsListItem = ({post, screen, navigation}) => <View style={styles
                 onPress={() => navigation.navigate("CommentsScreen", {
                     img: post.img,
                     comments: post.comments,
+                    postId: post.id,
+                    author: post.author,
                 })}
             />
             <Text style={{

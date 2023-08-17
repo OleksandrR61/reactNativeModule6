@@ -1,6 +1,6 @@
 import { doc, setDoc } from "firebase/firestore";
 
-import { firestore } from "../firebase/config";
+import { firestore } from "../config";
 
 export default uploadPostToServer = async post => {
     try {

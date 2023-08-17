@@ -1,22 +1,29 @@
+import { useSelector } from "react-redux";
 import { Text, View, StyleSheet, Image } from "react-native";
 
-export const CommentsListItem = ({comment, isOdd}) => <View
-        style={{...styles.container, flexDirection: isOdd ? "row" : "row-reverse"}}
+export const CommentsListItem = ({comment}) => {
+    const { userId } = useSelector(({auth}) => auth);
+
+    const isOwn = userId === comment.author;
+        
+    return <View
+        style={{...styles.container, flexDirection: isOwn ? "row-reverse" : "row"}}
     >
         <Image
-            source={comment.author}
-            style={{...styles.avatar, marginRight: isOdd ? 16 : 0, marginLeft: isOdd ? 0 : 16}}
+            source={require('../../assets/img/userExample.jpg')}
+            style={{...styles.avatar, marginRight: isOwn ? 0 : 16, marginLeft: isOwn ? 16 : 0}}
         />
         <View
             style={{...styles.innerContainer,
-                borderTopLeftRadius: isOdd ? 0 : 6,
-                borderTopRightRadius: isOdd ? 6 : 0
+                borderTopLeftRadius: isOwn ? 6 : 0,
+                borderTopRightRadius: isOwn ? 0 : 6,
             }}
         >
             <Text style={styles.comment}>{comment.text}</Text>
-            <Text style={{...styles.date, textAlign: isOdd ? "right" : "left"}}>{comment.date}</Text>
+            <Text style={{...styles.date, textAlign: isOwn ? "left" : "right"}}>{comment.date}</Text>
         </View>
     </View>;
+};
 
 const styles = StyleSheet.create({
     container: {
