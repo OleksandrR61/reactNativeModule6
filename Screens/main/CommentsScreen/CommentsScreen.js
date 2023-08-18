@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { View, TouchableOpacity, Keyboard, ImageBackground, Text } from "react-native";
-import { collection, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 import { PostsContainer, PostImage, CommentsList, FormInput } from "../../../components/";
 import { uploadCommentToServer } from "../../../firebase/api";
@@ -37,8 +37,8 @@ const CommentsScreen = ({route}) => {
     };
 
     const getAllComments = () => {
-        onSnapshot(collection(firestore, "posts"), data => {
-            setComments(data.docs.find(doc => doc.id === route.params.postId).data().comments);
+        onSnapshot(doc(firestore, "posts", route.params.postId), doc => {
+            setComments(doc.data().comments);
         });
     };
 
@@ -81,6 +81,7 @@ const CommentsScreen = ({route}) => {
                             borderRadius: 100,
                             fontFamily: "Inter-Medium",
                             fontWeight: "500",
+                            paddingRight: 50,
                         }}
                     />
                     <TouchableOpacity

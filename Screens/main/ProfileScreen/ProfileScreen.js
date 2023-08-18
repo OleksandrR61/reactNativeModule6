@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Container, InnerContainer, PageHeader, ProfileAvatar, BtnAdditionalImg, PostsList } from "../../../components";
 
 import { authSignOut } from "../../../redux/auth/authOperations";
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({route, navigation}) => {
     const { userAvatar, userName } = useSelector(({ auth }) => auth);
 
     const dispatch = useDispatch();
@@ -12,6 +13,8 @@ const ProfileScreen = ({navigation}) => {
     const logOut = () => {
         dispatch(authSignOut());
     };
+
+    const getUserPosts = () => {};
     
     return <Container>
     <InnerContainer style={{
