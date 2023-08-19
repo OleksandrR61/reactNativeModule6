@@ -10,13 +10,17 @@ const PostsScreen = ({route, navigation}) => {
     const [ posts, setPosts ] = useState([]);
 
     const getAllPost = () => {
-        onSnapshot(collection(firestore, "posts"), data => {
+        const offSnapshot = onSnapshot(collection(firestore, "posts"), data => {
             setPosts(data.docs.map(doc => doc.data()));
         });
+
+        return () => offSnapshot();
     };
 
     useEffect(() => {
-        getAllPost();        
+        const offSnapshot = getAllPost();
+        
+        return () => offSnapshot();
     }, []);
 
     return <PostsContainer>

@@ -1,12 +1,17 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { Text } from "react-native";
 
 import { Container, InnerContainer, PageHeader, ProfileAvatar, BtnAdditionalImg, PostsList } from "../../../components";
 
 import { authSignOut } from "../../../redux/auth/authOperations";
+import { firestore } from "../../../firebase/config";
 
 const ProfileScreen = ({route, navigation}) => {
-    const { userAvatar, userName } = useSelector(({ auth }) => auth);
+    const [ posts, setPosts ] = useState([]);
+
+    const { userAvatar, userName, userId } = useSelector(({ auth }) => auth);
 
     const dispatch = useDispatch();
 
@@ -14,7 +19,22 @@ const ProfileScreen = ({route, navigation}) => {
         dispatch(authSignOut());
     };
 
-    const getUserPosts = () => {};
+    const getUserPosts = () => {
+        const offSnapshot = onSnapshot(query(collection(firestore, "posts"), where("author", "==", userId)), data => {
+            setPosts(data.docs.map(doc => doc.data()));
+        });
+
+        return () => offSnapshot();
+    };
+
+    useEffect(() => {
+        let offSnapshot = () => {}
+        if (userId) {
+            offSnapshot = getUserPosts();
+        };
+        
+        return () => offSnapshot();
+    }, [userId]);
     
     return <Container>
     <InnerContainer style={{
@@ -41,7 +61,7 @@ const ProfileScreen = ({route, navigation}) => {
             }}
         />
         <PostsList
-            posts={[]}
+            posts={posts}
             screen={"profile"}
             navigation={navigation}
         />

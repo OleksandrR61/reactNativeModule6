@@ -36,14 +36,18 @@ const CommentsScreen = ({route}) => {
         };
     };
 
-    const getAllComments = () => {
-        onSnapshot(doc(firestore, "posts", route.params.postId), doc => {
+    const getComments = () => {
+        const offSnapshot = onSnapshot(doc(firestore, "posts", route.params.postId), doc => {
             setComments(doc.data().comments);
         });
+
+        return () => offSnapshot();
     };
 
     useEffect(() => {
-        getAllComments();        
+        const offSnapshot = getComments();
+        
+        return () => offSnapshot();
     }, []);
 
     return <PostsContainer>
