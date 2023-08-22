@@ -10,7 +10,7 @@ import { firestore } from "../../../firebase/config";
 
 const ProfileScreen = ({route, navigation}) => {
     const [ posts, setPosts ] = useState([]);
-
+    
     const { userAvatar, userName, userId } = useSelector(({ auth }) => auth);
 
     const dispatch = useDispatch();
@@ -40,7 +40,6 @@ const ProfileScreen = ({route, navigation}) => {
     <InnerContainer style={{
         paddingTop: 127,
     }}>
-        <ProfileAvatar source={require('../../../assets/img/userExample.jpg')} />
         <PageHeader
             style={{
                 fontWeight: "500",
@@ -48,6 +47,7 @@ const ProfileScreen = ({route, navigation}) => {
         >
             {userName}
         </PageHeader>
+        <ProfileAvatar source={userAvatar} />
         <BtnAdditionalImg
             source={require('../../../assets/img/logOut.png')}
             onPress={logOut}

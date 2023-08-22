@@ -7,7 +7,8 @@ import {
 } from 'firebase/auth';
 
 import { auth } from '../../firebase/config';
-import { authSlice } from './authReducer'
+import { uploadToServer } from '../../firebase/api';
+import { authSlice } from './authReducer';
 
 const authSignIn = ({email, password}) => async dispatch => {
     try {
@@ -29,7 +30,7 @@ const authSignUp = ({avatar, login, email, password}) => async dispatch => {
     try {
         await createUserWithEmailAndPassword(auth, email, password);
         if (auth.currentUser) {
-            await updateProfile(auth.currentUser, {displayName: login, photoURL: avatar});
+            await updateProfile(auth.currentUser, {displayName: login, photoURL: await uploadToServer(avatar, "avatars", auth.currentUser.uid)});
                         
             dispatch(authSlice.actions.updateUser({
                 userId: auth.currentUser.uid,
@@ -72,4 +73,4 @@ const authStateChange = () => async dispatch => {
     };
 };
 
-export { authSignIn, authSignUp, authSignOut, authStateChange};
+export { authSignIn, authSignUp, authSignOut, authStateChange };

@@ -2,7 +2,7 @@ import { View, StyleSheet, ImageBackground, Text } from "react-native";
 
 export const PostsUser = ({ user: {avatar, name, email} }) => <View style={styles.container}>
     <ImageBackground
-            source={avatar}
+            source={{uri: avatar}}
             style={styles.imageBG}
     />
     <View style={styles.title}>

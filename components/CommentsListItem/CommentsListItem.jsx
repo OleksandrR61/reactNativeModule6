@@ -10,7 +10,7 @@ export const CommentsListItem = ({comment}) => {
         style={{...styles.container, flexDirection: isOwn ? "row-reverse" : "row"}}
     >
         <Image
-            source={require('../../assets/img/userExample.jpg')}
+            source={{uri: comment.authorAvatar}}
             style={{...styles.avatar, marginRight: isOwn ? 0 : 16, marginLeft: isOwn ? 16 : 0}}
         />
         <View

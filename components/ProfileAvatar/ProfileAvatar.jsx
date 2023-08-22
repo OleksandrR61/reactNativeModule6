@@ -1,16 +1,35 @@
-import { View, Image, StyleSheet, Dimensions } from "react-native";
+import { useSelector } from "react-redux";
+import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
+
 import { BtnAdditionalImg } from "../BtnAdditionalImg/BtnAdditionalImg";
+import { selectImg } from "../../utils";
 
-const dimensionWidth = Dimensions.get("window").width;
+export const ProfileAvatar = ({source, onPress}) => {
+    const { userId } = useSelector(({auth}) => auth);
 
-export const ProfileAvatar = ({source}) => <View style={styles.container}>
-    <Image source={source} style={styles.avatar}/>
-    <BtnAdditionalImg
-        source={require('../../assets/img/union.png')}
-        styleBtn={styles.button}
-        styleImg={styles.byttonImg}
-    />
-</View>;
+    return <View style={styles.container}>
+        {userId
+            ? <Image
+                source={{uri: source}}
+                style={styles.avatar}
+            />
+            : <>
+                <TouchableOpacity onPress={async () => onPress(await selectImg())}>
+                    <Image
+                        source={{uri: source}}
+                        style={styles.avatar}
+                    />
+                </TouchableOpacity>
+                <BtnAdditionalImg
+                    source={require('../../assets/img/union.png')}
+                    styleBtn={styles.button}
+                    styleImg={styles.byttonImg}
+                    onPress={()=>handlePress(null)}
+                />
+            </>
+        }
+    </View>
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -25,7 +44,8 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         overflow: "hidden",
         alignSelf: "center",
-        resizeMode: "cover"
+        resizeMode: "cover",
+        backgroundColor: "#F6F6F6",
     },
     button: {
         backgroundColor: "#FFFFFF",

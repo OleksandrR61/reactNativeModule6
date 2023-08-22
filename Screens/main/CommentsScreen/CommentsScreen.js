@@ -14,7 +14,7 @@ const CommentsScreen = ({route}) => {
     const [ text, setText ] = useState("");
     const [ isLoading, setIsLoading ] = useState(false);
 
-    const { userId } = useSelector(({auth}) => auth);
+    const { userId, userAvatar } = useSelector(({auth}) => auth);
     
     const handlePress = async () => {
         if (text){
@@ -27,6 +27,7 @@ const CommentsScreen = ({route}) => {
             await uploadCommentToServer({
                 id: `${userId + Date.now()}`,
                 author: userId,
+                authorAvatar: userAvatar,
                 text,
                 date: `${dateNow.getDate() + 1} ${MONTHS[dateNow.getMonth()]}, ${dateNow.getFullYear()} | ${dateNow.getHours()}:${dateNow.getMinutes() < 10 ? "0" + dateNow.getMinutes() : dateNow.getMinutes()}`
             }, route.params.postId);

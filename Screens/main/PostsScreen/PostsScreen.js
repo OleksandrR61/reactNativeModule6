@@ -28,7 +28,7 @@ const PostsScreen = ({route, navigation}) => {
             user={{
                 name: userName,
                 email: userEmail,
-                avatar: require('../../../assets/img/userExample.jpg'),
+                avatar: userAvatar,
             }}
         />
         <PostsList

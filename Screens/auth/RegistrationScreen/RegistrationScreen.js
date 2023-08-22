@@ -39,6 +39,7 @@ const RegistrationScreen = ({navigation}) => {
 
         dispatch(authSignUp({avatar, login, email, password}));
 
+        setAvatar(INITIALSTATE.AVATAR);
         setLogin(INITIALSTATE.LOGIN);
         setEmail(INITIALSTATE.EMAIL);
         setPassword(INITIALSTATE.PASSWORD);
@@ -50,8 +51,11 @@ const RegistrationScreen = ({navigation}) => {
     return (
         <Container>
             <InnerContainer style={{paddingTop: 60}}>
-                <ProfileAvatar source={require('../../../assets/img/userExample.jpg')} />
                 <PageHeader>Реєстрація</PageHeader>
+                <ProfileAvatar
+                    source={avatar}
+                    onPress={img => setAvatar(img)}
+                />
                 <Form>
                     <FormInput
                         placeholder='Логін'
